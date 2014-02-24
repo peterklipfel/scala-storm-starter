@@ -26,9 +26,9 @@ object ExclamationTopology {
     } else {
       val cluster: LocalCluster = new LocalCluster()
       cluster.submitTopology("ExclamationTopology", config, builder.createTopology())
-      Utils.sleep(5000)
-      cluster.killTopology("ExclamationTopology")
-      cluster.shutdown()
+      // Utils.sleep(5000)
+      // cluster.killTopology("ExclamationTopology")
+      // cluster.shutdown()
     }
   }
 }
