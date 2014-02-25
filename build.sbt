@@ -10,14 +10,22 @@ scalaVersion := "2.9.2"
 
 fork in run := true
 
+net.virtualvoid.sbt.graph.Plugin.graphSettings
+
 resolvers ++= Seq(
   "twitter4j" at "http://twitter4j.org/maven2",
   "clojars.org" at "http://clojars.org/repo"
 )
 
 libraryDependencies ++= Seq(
-  "com.rabbitmq" % "amqp-client" % "3.1.1",
   "storm" % "storm" % "0.8.2" % "provided",
+  "junit" % "junit" % "4.10" % "test",
+  "org.slf4j" % "slf4j-log4j12" % "1.6.4",
+  "org.slf4j" % "slf4j-api" % "1.6.4",
+  "storm" % "storm" % "${storm.version}" % "provided",
+  "com.netflix.astyanax" % "astyanax" % "1.56.37",
+  "org.mockito" % "mockito-all" % "1.9.5" % "test",
+  "com.rabbitmq" % "amqp-client" % "3.1.1",
   "org.clojure" % "clojure" % "1.4.0" % "provided",
   "org.twitter4j" % "twitter4j-core" % "2.2.6-SNAPSHOT",
   "org.twitter4j" % "twitter4j-stream" % "2.2.6-SNAPSHOT",
