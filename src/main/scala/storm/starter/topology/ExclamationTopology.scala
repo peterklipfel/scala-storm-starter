@@ -11,6 +11,7 @@ import storm.starter.amqp._
 import storm.starter.spout._
 
 import scala.collection.JavaConversions._
+import collection.mutable._
 
 object ExclamationTopology {
   def main(args: Array[String]) {
@@ -19,8 +20,11 @@ object ExclamationTopology {
     val builder: TopologyBuilder = new TopologyBuilder()
 
     val configKey : String = "cassandra-config"
+
+    val keyspace: java.util.List[String] = ArrayBuffer("stormks")
+
     val clientConfigMap = Map(StormCassandraConstants.CASSANDRA_HOST->"localhost:9160",
-          StormCassandraConstants.CASSANDRA_KEYSPACE->Array("stormks"))
+          StormCassandraConstants.CASSANDRA_KEYSPACE->keyspace)
     val clientConfig =  new java.util.HashMap[String,Object](clientConfigMap)
 
     // builder.setSpout("word", new TestWordSpout(), 10)
@@ -31,7 +35,7 @@ object ExclamationTopology {
     builder.setBolt("cassandra", cassandraBolt)
 
     val config = new Config()
-    config.setDebug(true)
+    // config.setDebug(true)
     config.put(configKey, clientConfig)
 
     if (args != null && args.length > 0) {
@@ -40,9 +44,9 @@ object ExclamationTopology {
     } else {
       val cluster: LocalCluster = new LocalCluster()
       cluster.submitTopology("ExclamationTopology", config, builder.createTopology())
-      // Utils.sleep(5000)
-      // cluster.killTopology("ExclamationTopology")
-      // cluster.shutdown()
+      Utils.sleep(5000)
+      cluster.killTopology("ExclamationTopology")
+      cluster.shutdown()
     }
   }
 }
