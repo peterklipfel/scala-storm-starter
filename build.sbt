@@ -51,12 +51,8 @@ mainClass in assembly := Some("storm.starter.topology.ExclamationTopology")
 
 TaskKey[File]("generate-storm") <<= (baseDirectory, fullClasspath in Compile, mainClass in Compile) map { (base, cp, main) =>
   val template = """#!/bin/sh
-storm classpath "%s"
-storm jar target/target/scala-2.9.2/scala-storm-starter_2.9.2-0.0.2-SNAPSHOT.jar %s firesuit
-"""
-  /*"""#!/bin/sh
-java -classpath "%s" %s "$@"
-"""*/
+    java -classpath "%s" %s "$@"
+  """
   val mainStr = main getOrElse error("No main class specified")
   val contents = template.format(cp.files.absString, mainStr)
   val out = base / "bin/run-main-topology.sh"

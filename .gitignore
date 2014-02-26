@@ -1,4 +1,4 @@
-bin/
+bin/run-main-topology.sh
 target/
 .ensime
 storm-local
