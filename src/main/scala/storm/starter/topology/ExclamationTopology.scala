@@ -28,8 +28,8 @@ object ExclamationTopology {
     val clientConfig =  new java.util.HashMap[String,Object](clientConfigMap)
 
     // builder.setSpout("word", new TestWordSpout(), 10)
-    builder.setSpout("rabbitmq", new AMQPSpout("localhost", 5672, "guest", "guest", "/", new ExclusiveQueueWithBinding("stormExchange", "exclaimTopology"), new AMQPScheme()), 10)
-    builder.setBolt("exclaim", new ExclamationBolt(), 3).shuffleGrouping("rabbitmq")
+    builder.setSpout("rabbitmq", new AMQPSpout("localhost", 5672, "guest", "guest", "/", new ExclusiveQueueWithBinding("stormExchange", "exclaimTopology"), new AMQPScheme()), 1)
+    builder.setBolt("exclaim", new ExclamationBolt(), 1).shuffleGrouping("rabbitmq")
     val cassandraBolt = new CassandraBatchingBolt(configKey, new DefaultTupleMapper("stormks", "stormcf", "word"))
     cassandraBolt.setAckStrategy(AckStrategy.ACK_ON_WRITE) 
     builder.setBolt("cassandra", cassandraBolt)
@@ -44,7 +44,7 @@ object ExclamationTopology {
     } else {
       val cluster: LocalCluster = new LocalCluster()
       cluster.submitTopology("ExclamationTopology", config, builder.createTopology())
-      Utils.sleep(5000)
+      Utils.sleep(100000)
       cluster.killTopology("ExclamationTopology")
       cluster.shutdown()
     }

@@ -18,7 +18,7 @@ resolvers ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "storm" % "storm" % "0.8.2" % "provided",
+  "storm" % "storm" % "0.9.0" % "provided",
   "junit" % "junit" % "4.10" % "test",
   "org.slf4j" % "slf4j-log4j12" % "1.6.4",
   "org.slf4j" % "slf4j-api" % "1.6.4" intransitive,
