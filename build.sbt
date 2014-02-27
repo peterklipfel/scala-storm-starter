@@ -17,12 +17,13 @@ resolvers ++= Seq(
 
 libraryDependencies ++= Seq(
   "com.rabbitmq" % "amqp-client" % "3.1.1",
-  "storm" % "storm" % "0.8.2" % "provided",
+  "storm" % "storm" % "0.9.0" % "provided",
   "org.clojure" % "clojure" % "1.4.0" % "provided",
   "org.twitter4j" % "twitter4j-core" % "2.2.6-SNAPSHOT",
   "org.twitter4j" % "twitter4j-stream" % "2.2.6-SNAPSHOT",
   "org.specs2" %% "specs2" % "1.11" % "test"
 )
+
 
 mainClass in Compile := Some("storm.starter.topology.ExclamationTopology")
 
