@@ -6,6 +6,7 @@ import backtype.storm.topology.TopologyBuilder
 import backtype.storm.utils.Utils
 import storm.starter.amqp._
 import storm.starter.spout._
+import storm.starter.cassandra._
 
 object ExclamationTopology {
   def main(args: Array[String]) {
@@ -15,7 +16,8 @@ object ExclamationTopology {
 
     // builder.setSpout("word", new TestWordSpout(), 10)
     builder.setSpout("rabbitmq", new AMQPSpout("localhost", 5672, "guest", "guest", "/", new ExclusiveQueueWithBinding("stormExchange", "exclaimTopology"), new AMQPScheme()), 10)
-    builder.setBolt("exclaim", new ExclamationBolt(), 3).shuffleGrouping("rabbitmq")
+    builder.setBolt("rawJSONtoCassandra", new CassandraRawStorer(), 2).shuffleGrouping("rabbitmq")
+    builder.setBolt("exclaim", new ExclamationBolt(), 3).shuffleGrouping("rawJSONtoCassandra")
 
     val config = new Config()
     config.setDebug(true)
@@ -26,9 +28,9 @@ object ExclamationTopology {
     } else {
       val cluster: LocalCluster = new LocalCluster()
       cluster.submitTopology("ExclamationTopology", config, builder.createTopology())
-      Utils.sleep(5000)
-      cluster.killTopology("ExclamationTopology")
-      cluster.shutdown()
+      // Utils.sleep(5000)
+      // cluster.killTopology("ExclamationTopology")
+      // cluster.shutdown()
     }
   }
 }

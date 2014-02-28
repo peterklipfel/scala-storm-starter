@@ -21,8 +21,20 @@ libraryDependencies ++= Seq(
   "org.clojure" % "clojure" % "1.4.0" % "provided",
   "org.twitter4j" % "twitter4j-core" % "2.2.6-SNAPSHOT",
   "org.twitter4j" % "twitter4j-stream" % "2.2.6-SNAPSHOT",
-  "org.specs2" %% "specs2" % "1.11" % "test"
+  "org.specs2" %% "specs2" % "1.11" % "test",
+  "com.datastax.cassandra" % "cassandra-driver-core" % "1.0.3",
+  "com.yammer.metrics" % "metrics-core" % "2.2.0"
+  // "javax.servlet" % "servlet-api" % "2.5-20081211" intransitive
 )
+
+
+
+excludedJars in assembly <<= (fullClasspath in assembly) map { cp =>
+  cp filter { f => 
+    f.data.getName == "servlet-api-2.5.jar"
+  }
+}
+// f.data.getName == "log4j-over-slf4j.jar" 
 
 
 mainClass in Compile := Some("storm.starter.topology.ExclamationTopology")
